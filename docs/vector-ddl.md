@@ -12,7 +12,7 @@ vector(float64, 128) -- 128-dimensional vector of float64
 
 ```bnf
 <declaration> ::= "vector" [ "(" [ <vector_type> "," ] <dim> ")" ]
-<vector_type> ::= "float32" | "float64"
+<vector_type> ::= "float32"
 <dim> ::= <positive_integer>
 <positive_integer> ::= {digit}+
 ```
@@ -28,7 +28,7 @@ CREATE TABLE items (
 );
 ```
 
-### Create Column
+### Create column
 
 ```sql
 ALTER TABLE items
