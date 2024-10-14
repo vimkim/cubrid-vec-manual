@@ -12,10 +12,14 @@ vector(float64, 128) -- 128-dimensional vector of float64
 
 ```bnf
 <declaration> ::= "vector" [ "(" [ <vector_type> "," ] <dim> ")" ]
-<vector_type> ::= "float32"
+<vector_type> ::= "float32" | "binary"
 <dim> ::= <positive_integer>
 <positive_integer> ::= {digit}+
 ```
+
+- `<dim>` is a positive integer value
+  - between 1 and 2000 inclusive if and only if `<vector_type>` is float32.
+  - between 1 and 64000 inclusive if and only if `<vector_type>` is binary.
 
 ## Examples
 
