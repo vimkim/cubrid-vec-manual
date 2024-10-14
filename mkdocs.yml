@@ -1,8 +1,14 @@
 site_name: CUBRID Vector Database
 theme:
-  name: material
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust
+    - bnf
 
 markdown_extensions:
+  - mdx_truly_sane_lists:
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
