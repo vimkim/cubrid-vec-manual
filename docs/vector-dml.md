@@ -1,8 +1,10 @@
 # Vector DML
 
-This page describes CRUD operations on vectors.
+This page outlines the CRUD operations (Create, Read, Update, Delete) for vectors in a database.
 
-## Create and insert vector into a table
+## Create and Insert a Vector into a Table
+
+To insert vectors into a table:
 
 ```sql
 INSERT INTO items (
@@ -13,7 +15,9 @@ VALUES
   ('[4,5,6]');
 ```
 
-## Read vectors
+## Read Vectors
+
+To retrieve vectors from the table:
 
 ```sql
 SELECT *
@@ -21,9 +25,12 @@ FROM items
 LIMIT 5;
 ```
 
-### Read nearest neighbor vectors (Exact)
+### Read Nearest Neighbor Vectors
 
-By using vector distance operators
+You can retrieve the nearest neighbors
+using either vector distance operators or functions.
+
+Using a distance operator:
 
 ```sql
 SELECT * FROM items
@@ -31,18 +38,65 @@ ORDER BY embedding <-> '[3,1,2]'
 LIMIT 5;
 ```
 
-Or, by using vector distance functions
+Using a distance function:
 
 ```sql
-SELECT * FROM items
+SELECT name FROM items
 ORDER BY l2_distance(embedding, '[3, 1, 2]')
 LIMIT 5;
 ```
 
-The above two statements are equivalent.
+Both of the above queries are equivalent.
 
-### Read vector with vector index (Approximate)
+- If no vector index is present, the "exact nearest neighbor" algorithm is applied.
+- If a vector index exists, it will be used automatically.
+
+Note on Multiple Vector Indices
+You can create multiple indices for a single vector column,
+but each index must correspond to a different type of distance operator.
+A single vector column can only have one index for each distance type.
+
+## Control Vector Index Usage
+
+- `/*+ VECTOR_INDEX_SCAN (my_col_name) */`: force vector index
+- `/*+ NO_VECTOR_INDEX_SCAN */`: force prevent vector index
+
+### Force the usage of vector index, if present
+
+First, you need to create an ANN vector index on 'embedding' column of table 'items'.
+
+Refer to [Vector Index](./vector-index.md) page.
+
+You can place a hint to force the optimizer to use the vector index if present.
+If no index is found, the optimizer silently ignores the hint.
+
+```sql
+SELECT /*+ VECTOR_INDEX_SCAN (my_col_name) */ name
+FROM items
+ORDER BY l2_distance(embedding, '[3, 1, 2]')
+LIMIT 5;
+```
+
+### Abort the usage of vector index
+
+```sql
+SELECT /*+ NO_VECTOR_INDEX_SCAN */ name
+FROM items
+ORDER BY l2_distance(embedding, '[3, 1, 2]')
+LIMIT 5;
+```
 
 ## Update vector
 
+```sql
+UPDATE items
+SET embedding = '[1, 2, 3]'
+WHERE id = 1;
+```
+
 ## Delete vector
+
+```sql
+DELETE FROM items
+WHERE id = 1;
+```
