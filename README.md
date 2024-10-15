@@ -2,6 +2,6 @@
 
 ### how to view locally
 
-```
+```sh
 mkdocs serve
 ```
