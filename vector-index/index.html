@@ -24,6 +24,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/bnf.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/sql.min.js"></script>
       <script>hljs.highlightAll();</script> 
 </head>
 
@@ -57,7 +58,33 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="#">Vector Index</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#create-a-vector-index">Create a Vector Index</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#bnf">BNF</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#inspect-vector-index-options">Inspect Vector Index Options</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configure-search-parameter">Configure Search parameter</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#update-vector-index">Update Vector Index</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#delete-vector-index">Delete Vector Index</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#vector-index-configuration">Vector Index Configuration</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#memory-usage">Memory Usage</a>
+    </li>
+        </ul>
+    </li>
     </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../vector-operations/">Vector Operations</a>
                 </li>
               </ul>
       </div>
@@ -84,12 +111,91 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="vector-index">Vector Index</h1>
-<p>How to</p>
+<p>This page outlines the CRUD operations for vector indices in CUBRID database.</p>
+<p>CUBRID only supports HNSW index at the moment.</p>
+<h2 id="create-a-vector-index">Create a Vector Index</h2>
+<p>In order to create a vector index, one must specify:</p>
+<ol>
+<li>the table and the column name where the index will be created onto,</li>
+<li>the metric function used for distance calculation,</li>
+<li>the index construction parameters
+   (for HNSW, this will be <code>ef_construction</code> and <code>M</code>).</li>
+</ol>
+<p>In order to effectively use the HNSW index, one must specify:</p>
+<ul>
+<li>the search parameter (for HNSW, this will be <code>ef_search</code>).</li>
+</ul>
+<h3 id="bnf">BNF</h3>
+<div class="language-bnf highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">&lt;</span><span class="nc">create_vector_index</span><span class="p">&gt;</span> <span class="o">::=</span> &quot;CREATE VECTOR INDEX&quot; <span class="p">&lt;</span><span class="nc">index_name</span><span class="p">&gt;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&quot;ON&quot; <span class="p">&lt;</span><span class="nc">table_name</span><span class="p">&gt;</span> &quot;(&quot; <span class="p">&lt;</span><span class="nc">column_name</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nc">metric_function</span><span class="p">&gt;</span> &quot;)&quot; <span class="p">&lt;</span><span class="nc">with_options</span><span class="p">&gt;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">&lt;</span><span class="nc">index_name</span><span class="p">&gt;</span> <span class="o">::=</span> <span class="p">&lt;</span><span class="nc">identifier</span><span class="p">&gt;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">&lt;</span><span class="nc">table_name</span><span class="p">&gt;</span> <span class="o">::=</span> <span class="p">&lt;</span><span class="nc">identifier</span><span class="p">&gt;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">&lt;</span><span class="nc">column_name</span><span class="p">&gt;</span> <span class="o">::=</span> <span class="p">&lt;</span><span class="nc">identifier</span><span class="p">&gt;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">&lt;</span><span class="nc">metric_function</span><span class="p">&gt;</span> <span class="o">::=</span> <span class="p">&lt;</span><span class="nc">cosine</span><span class="p">&gt;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">&lt;</span><span class="nc">cosine</span><span class="p">&gt;</span> <span class="o">::=</span> &quot;cosine&quot;
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">&lt;</span><span class="nc">with_options</span><span class="p">&gt;</span> <span class="o">::=</span> &quot;WITH&quot; &quot;(&quot; <span class="p">&lt;</span><span class="nc">option_list</span><span class="p">&gt;</span> &quot;)&quot;
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">&lt;</span><span class="nc">option_list</span><span class="p">&gt;</span> <span class="o">::=</span> <span class="p">&lt;</span><span class="nc">option</span><span class="p">&gt;</span> | <span class="p">&lt;</span><span class="nc">option</span><span class="p">&gt;</span> &quot;,&quot; <span class="p">&lt;</span><span class="nc">option_list</span><span class="p">&gt;</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">&lt;</span><span class="nc">option</span><span class="p">&gt;</span> <span class="o">::=</span> <span class="p">&lt;</span><span class="nc">parameter</span><span class="p">&gt;</span> &quot;=&quot; <span class="p">&lt;</span><span class="nc">value</span><span class="p">&gt;</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="p">&lt;</span><span class="nc">parameter</span><span class="p">&gt;</span> <span class="o">::=</span> &quot;m&quot; | &quot;ef_construction&quot;
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">&lt;</span><span class="nc">value</span><span class="p">&gt;</span> <span class="o">::=</span> <span class="p">&lt;</span><span class="nc">integer</span><span class="p">&gt;</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">&lt;</span><span class="nc">identifier</span><span class="p">&gt;</span> <span class="o">::=</span> [A-Za-z_][A-Za-z_0-9]*
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="p">&lt;</span><span class="nc">integer</span><span class="p">&gt;</span> <span class="o">::=</span> [0-9]+
+</span></code></pre></div>
+<ul>
+<li><code>m</code> is the maximum number of connections (edges) each node (vector)
+  can have in the graph at each layer of the HNSW structure.
+  It is also known as the degree of each node in the graph.</li>
+<li><code>ef_construction</code> controls the size of the dynamic candidate list
+  when inserting elements during the index construction phase.
+  It defines how many neighbors are checked
+  during the construction of the graph when new vectors are added.</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="n">VECTOR</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">embedding_hnsw_idx</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">ON</span><span class="w"> </span><span class="n">items</span><span class="w"> </span><span class="p">(</span><span class="n">embedding</span><span class="w"> </span><span class="n">cosine</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">WITH</span><span class="w"> </span><span class="p">(</span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="n">ef_construction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">);</span>
+</span></code></pre></div>
+<h2 id="inspect-vector-index-options">Inspect Vector Index Options</h2>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">embedding_hnsw_idx</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">items</span><span class="p">;</span>
+</span></code></pre></div>
+<h2 id="configure-search-parameter">Configure Search parameter</h2>
+<ul>
+<li><code>ef_search</code> is the exploration factor during search.
+  It is a parameter in the HNSW algorithm that controls
+  the number of nearest neighbor candidates to explore during a search query.
+  If ef_search is not specified,
+  it is set to the same value as the <code>ef_construction</code> of the index by default.</li>
+</ul>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="cm">/*+ VECTOR_INDEX_SCAN (embedding) */</span><span class="w"> </span><span class="n">name</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">items</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">l2_distance</span><span class="p">(</span><span class="n">embedding</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;[3, 1, 2]&#39;</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">WITH</span><span class="w"> </span><span class="p">(</span><span class="n">ef_search</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">64</span><span class="p">);</span>
+</span></code></pre></div>
+<h2 id="update-vector-index">Update Vector Index</h2>
+<p>Not implemented yet.</p>
+<h2 id="delete-vector-index">Delete Vector Index</h2>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">DROP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">embedding_hnsw_idx</span><span class="p">;</span>
+</span></code></pre></div>
+<h2 id="vector-index-configuration">Vector Index Configuration</h2>
+<h3 id="memory-usage">Memory Usage</h3>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># filename: cubrid.conf</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">vector_memory_size</span><span class="o">=</span><span class="mi">8</span><span class="n">G</span>
+</span></code></pre></div>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href="../vector-dml/" class="btn btn-neutral float-left" title="Vector DML"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../vector-operations/" class="btn btn-neutral float-right" title="Vector Operations">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -114,6 +220,8 @@
     
       <span><a href="../vector-dml/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="../vector-operations/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
