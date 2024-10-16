@@ -75,6 +75,8 @@ FROM items;
   If ef_search is not specified,
   it is set to the same value as the `ef_construction` of the index by default.
 
+- [ ] TODO: Discuss the default value of ef_search if not specified.
+
 ```sql
 SELECT /*+ VECTOR_INDEX_SCAN (embedding) */ name
 FROM items
