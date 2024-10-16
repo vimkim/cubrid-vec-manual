@@ -20,7 +20,6 @@ This page describes the supported vector operations.
 - l1_distance()
 - cosine_distance()
 - inner_product()
--
 
 ## Vector Operators
 
