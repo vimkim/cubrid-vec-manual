@@ -59,6 +59,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#read-vectors">Read Vectors</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#read-nearest-neighbor-vectors">Read Nearest Neighbor Vectors</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#note-on-multiple-vector-indices">Note on Multiple Vector Indices</a>
+    </li>
+        </ul>
     </li>
         </ul>
     </li>
@@ -143,8 +147,8 @@ using either vector distance operators or functions.</p>
 <li>If no vector index is present, the "exact nearest neighbor" algorithm is applied.</li>
 <li>If a vector index exists, it will be used automatically.</li>
 </ul>
-<p>Note on Multiple Vector Indices
-You can create multiple indices for a single vector column,
+<h4 id="note-on-multiple-vector-indices">Note on Multiple Vector Indices</h4>
+<p>You can create multiple indices for a single vector column,
 but each index must correspond to a different type of distance operator.
 A single vector column can only have one index for each distance type.</p>
 <h2 id="control-vector-index-usage">Control Vector Index Usage</h2>
