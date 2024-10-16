@@ -70,6 +70,8 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#inner_product">inner_product()</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#vector-operators">Vector Operators</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#basic-vector-operators">Basic Vector Operators</a>
@@ -80,7 +82,15 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#specifications">Specifications</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#vector_dims">vector_dims()</a>
+    <li class="toctree-l3"><a class="reference internal" href="#vector_dimsvector-integer">vector_dims(vector) -&gt; integer</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#vector_dimsvector-integer_1">vector_dims(vector) -&gt; integer</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#vector_dimension_countvector-integer">vector_dimension_count(vector) -&gt; integer</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#vector_normvector-double">vector_norm(vector) -&gt; double</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#vector_dimension_formatvector-int8-float32-float64">vector_dimension_format(vector) -&gt; INT8 | FLOAT32 | FLOAT64</a>
     </li>
         </ul>
     </li>
@@ -115,18 +125,23 @@
 <h2 id="overview">Overview</h2>
 <h3 id="basic-vector-functions">Basic Vector Functions</h3>
 <ul>
-<li>vector_dims()</li>
-<li>vector_dimension_count()</li>
-<li>vector_norm()</li>
-<li>vector_dimension_format()</li>
+<li>vector_dims(vector) -&gt; integer</li>
+<li>vector_dimension_count(vector) -&gt; integer</li>
+<li>vector_norm(vector) -&gt; double</li>
+<li>vector_dimension_format(vector) -&gt; INT8 | FLOAT32 | FLOAT64</li>
+</ul>
+<ul>
+<li>[ ] TODO: Discuss vector_dimension_format output</li>
 </ul>
 <h3 id="vector-distance-functions">Vector Distance Functions</h3>
 <ul>
-<li>l1_distance()</li>
 <li>l2_distance()</li>
 <li>l2_normalize()</li>
+<li>l1_distance()</li>
 <li>cosine_distance()</li>
-<li>inner_product()</li>
+<li>
+<h2 id="inner_product">inner_product()</h2>
+</li>
 </ul>
 <h2 id="vector-operators">Vector Operators</h2>
 <h3 id="basic-vector-operators">Basic Vector Operators</h3>
@@ -144,7 +159,22 @@
 <li><code>&lt;+&gt;</code>: L1 distance</li>
 </ul>
 <h2 id="specifications">Specifications</h2>
-<h3 id="vector_dims">vector_dims()</h3>
+<h3 id="vector_dimsvector-integer">vector_dims(vector) -&gt; integer</h3>
+<div class="language-bnf highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>VECTOR_DIMS ( EXPR )
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>VECTOR_DIMENSION_COUNT ( EXPR )
+</span></code></pre></div>
+<ul>
+<li>It returns the number of dimensions of a vector as a NUMBER.</li>
+<li>EXPR must evaluate to a vector.</li>
+<li>If EXPR is NULL, NULL is returned.</li>
+</ul>
+<ul>
+<li>[ ] TODO: should it return a NUMBER?</li>
+</ul>
+<h3 id="vector_dimsvector-integer_1">vector_dims(vector) -&gt; integer</h3>
+<h3 id="vector_dimension_countvector-integer">vector_dimension_count(vector) -&gt; integer</h3>
+<h3 id="vector_normvector-double">vector_norm(vector) -&gt; double</h3>
+<h3 id="vector_dimension_formatvector-int8-float32-float64">vector_dimension_format(vector) -&gt; INT8 | FLOAT32 | FLOAT64</h3>
               
             </div>
           </div><footer>

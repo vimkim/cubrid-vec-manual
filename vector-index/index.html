@@ -174,6 +174,9 @@
   If ef_search is not specified,
   it is set to the same value as the <code>ef_construction</code> of the index by default.</li>
 </ul>
+<ul>
+<li>[ ] TODO: Discuss the default value of ef_search if not specified.</li>
+</ul>
 <div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="cm">/*+ VECTOR_INDEX_SCAN (embedding) */</span><span class="w"> </span><span class="n">name</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">items</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">l2_distance</span><span class="p">(</span><span class="n">embedding</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;[3, 1, 2]&#39;</span><span class="p">)</span>
