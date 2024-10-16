@@ -6,6 +6,7 @@ theme:
     - yaml
     - rust
     - bnf
+    - sql
 
 markdown_extensions:
   - mdx_truly_sane_lists:
@@ -22,3 +23,4 @@ nav:
   - Vector DDL: vector-ddl.md
   - Vector DML: vector-dml.md
   - Vector Index: vector-index.md
+  - Vector Operations: vector-operations.md
