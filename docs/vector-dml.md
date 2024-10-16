@@ -51,7 +51,8 @@ Both of the above queries are equivalent.
 - If no vector index is present, the "exact nearest neighbor" algorithm is applied.
 - If a vector index exists, it will be used automatically.
 
-Note on Multiple Vector Indices
+#### Note on Multiple Vector Indices
+
 You can create multiple indices for a single vector column,
 but each index must correspond to a different type of distance operator.
 A single vector column can only have one index for each distance type.
