@@ -7,6 +7,9 @@ theme:
     - rust
     - bnf
     - sql
+plugins:
+  - search
+  - print-site
 
 markdown_extensions:
   - mdx_truly_sane_lists:
