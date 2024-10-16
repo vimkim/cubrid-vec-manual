@@ -1,7 +1,9 @@
 # CUBRID Vector
 
 (DEPRECATED) CUBRID Vector Database Specification
+
 (DEPRECATED) CUBRID Vector Database Specification
+
 (DEPRECATED) CUBRID Vector Database Specification
 
 Migrated to [Sphinx](https://vimkim.github.io/cubrid-vec-manual-sphinx/)
